@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_structure_day"
+            android:title="STRUCTURE YOUR DAY" />
+        <item
+            android:id="@+id/nav_view_schedule"
+            android:title="VIEW SCHEDULE" />
+        <item
+            android:id="@+id/nav_copy_schedule"
+            android:title="COPY SCHEDULE" />
+        <item
+            android:id="@+id/nav_check_your_score"
+            android:title="CHECK YOUR SCORE" />
+        <item
+            android:id="@+id/nav_share_schedule"
+            android:title="SHARE YOUR SCHEDULE"/>
+        <item
+            android:id="@+id/nav_explore_activities"
+            android:title="EXPLORE ACTIVITIES"/>
+        <item
+            android:id="@+id/nav_contact"
+            android:title="CONTACT"/>
+        <item
+            android:id="@+id/nav_calendar"
+            android:title="TEST CALENDAR"/>
+    </group>
+</menu>

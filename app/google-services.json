@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "409031974447",
+    "firebase_url": "https://balancever-8db5b.firebaseio.com",
+    "project_id": "balancever-8db5b",
+    "storage_bucket": "balancever-8db5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409031974447:android:a02e87c3e02a06ad44b0da",
+        "android_client_info": {
+          "package_name": "com.example.balanceverattempt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409031974447-enlkoppg76d08a09uim55pl6lmd1t4q9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.balanceverattempt",
+            "certificate_hash": "e1f0c83415f4a40d3a1d0016adc146dcdcd765d2"
+          }
+        },
+        {
+          "client_id": "409031974447-86iodv6f7bamoplnhl7007h4id6dpup0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmFZPp-2ex4zuQaI5OKHcy3ttFKc_aY60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409031974447-86iodv6f7bamoplnhl7007h4id6dpup0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
