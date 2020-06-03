@@ -14,7 +14,9 @@ public class User {
 
     private String id, name, address, phone, email, password;
 
-    private List<java.util.Map.Entry<Date, Event>> eventList;
+    private List<Date> eventDateList;
+
+    private List<Event> eventEventList;
 
     public User() {
     }
@@ -25,7 +27,10 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.password = password;
-        eventList = new ArrayList<>();
+
+        // Initializing lists
+        eventEventList = new ArrayList<>();
+        eventDateList = new ArrayList<>();
     }
 
     public String getId() {
@@ -76,24 +81,60 @@ public class User {
         this.password = password;
     }
 
-    public List<Map.Entry<Date, Event>> getEventList() {
-        return eventList;
+    // Event Date List
+    public List<Date> getEventDateList() {
+        return eventDateList;
     }
 
-    public void setEventList(List<Map.Entry<Date, Event>> eventList) {
-        this.eventList = eventList;
+    public void setEventDateList(List<Date> eventDateList) {
+        this.eventDateList = eventDateList;
     }
 
-    public void addEventsForDay(Date date, List<Event> eventList) {
-        for (Event e : eventList) {
-            Map.Entry<Date, Event> pair = new AbstractMap.SimpleEntry<>(date, e);
-            this.eventList.add(pair);
+    public void addDayDates(List<Date> dateList){
+        for (Date d : dateList){
+            eventDateList.add(d);
         }
     }
 
-    public void addSingleEvent(Date date, Event event) {
-        Map.Entry<Date, Event> pair = new AbstractMap.SimpleEntry<>(date, event);
-        this.eventList.add(pair);
+    public void addDate(Date date){
+        eventDateList.add(date);
+    }
+
+    public void removeDate(Date date){
+        for (Date d : eventDateList){
+            if (d.equals(date)){
+                eventDateList.remove(date);
+            }
+        }
+    }
+
+    // Event event list
+    public List<Event> getEventEventList() {
+        return eventEventList;
+    }
+
+    public void setEventEventList(List<Event> eventEventList) {
+        this.eventEventList = eventEventList;
+    }
+
+    public void addEventsForDay(List<Event> eventDayList){
+        System.out.println("addEventsForDay: " + eventDayList);
+        eventEventList.addAll(eventDayList);
+//        for (Event e : eventDayList){
+//            eventEventList.add(e);
+//        }
+    }
+
+    public void addEvent(Event event){
+        eventEventList.add(event);
+    }
+
+    public void removeEvent(Event event){
+        for (Event e : eventEventList){
+            if (e.getData().equals(event.getData()) && e.getTimeInMillis() == event.getTimeInMillis()){
+                eventEventList.remove(event);
+            }
+        }
     }
 
     @Override

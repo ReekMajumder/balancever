@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.balanceverattempt.HomeNav.ContactFragment;
+import com.example.balanceverattempt.HomeNav.GoogleCalendarHandler;
 import com.example.balanceverattempt.HomeNav.HomeFragment;
 import com.example.balanceverattempt.HomeNav.MainActivity;
 import com.example.balanceverattempt.HomeNav.SignInFragment;
@@ -38,6 +39,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Events;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +57,8 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.util.List;
 
 public class LoggedInActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -58,7 +67,7 @@ public class LoggedInActivity extends AppCompatActivity implements NavigationVie
     private DrawerLayout drawer;
     private Menu toolbarMenu;
     private GoogleSignInAccount signInAccount;
-    private String email, key;
+    private String email, key, isGoogleAccount;
     private static User currentUser;
     private Button structDayButton, ideasButton;
 
@@ -85,6 +94,7 @@ public class LoggedInActivity extends AppCompatActivity implements NavigationVie
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
         key = intent.getStringExtra("key");
+        isGoogleAccount = intent.getStringExtra("google_account");
 
         signInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
@@ -92,25 +102,30 @@ public class LoggedInActivity extends AppCompatActivity implements NavigationVie
             openLoggedInFragment();
         }
 
-        // Normal login
+        // Handling the Current User when Logging in
+        // Setting currentUser it's values
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("Normal login.");
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    if (ds.child("email").getValue(String.class).equals(email)){
-                        currentUser = new User(ds.child("name").getValue(String.class), ds.child("address").getValue(String.class),
-                                            ds.child("phone").getValue(String.class), ds.child("email").getValue(String.class),
-                                            ds.child("password").getValue(String.class));
-                        currentUser.setId(key);
-                        System.out.println(currentUser);
-                        if (toolbarMenu != null && currentUser != null){
-                            toolbarMenu.findItem(R.id.menuName).setTitle(currentUser.getName());
+                if (isGoogleAccount.equals("false")) {
+                    System.out.println("Normal login.");
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        if (ds.child("email").getValue(String.class).equals(email)) {
+                            currentUser = new User(ds.child("name").getValue(String.class), ds.child("address").getValue(String.class),
+                                    ds.child("phone").getValue(String.class), ds.child("email").getValue(String.class),
+                                    ds.child("password").getValue(String.class));
+                            currentUser.setId(key);
+                            System.out.println(currentUser);
+                            if (toolbarMenu != null && currentUser != null) {
+                                toolbarMenu.findItem(R.id.menuName).setTitle(currentUser.getName());
+                            }
+                            break;
                         }
-                        return;
                     }
+                } else if (isGoogleAccount.equals("true")) {
+                    System.out.println("Google Login");
                 }
-                System.out.println("EMAIL NOT FOUND");
+
             }
 
             @Override
@@ -123,7 +138,7 @@ public class LoggedInActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onStart() {
         super.onStart();
-        if (currentUser != null){
+        if (currentUser != null) {
             currentUser = null;
         }
     }
@@ -183,7 +198,6 @@ public class LoggedInActivity extends AppCompatActivity implements NavigationVie
     }
 
 
-
     public void signOut() {
         Log.d(TAG, "onClick: attempting to sign out the user");
         FirebaseAuth.getInstance().signOut();
@@ -234,11 +248,11 @@ public class LoggedInActivity extends AppCompatActivity implements NavigationVie
         transaction.replace(R.id.logged_fragment_container, new TestCalendarFragment(), "CALENDAR_FRAGMENT").commit();
     }
 
-    public void strucDayBtnOnClick(View view){
+    public void strucDayBtnOnClick(View view) {
         openStructureDayFragment();
     }
 
-    public void ideasBtnOnClick(View view){
+    public void ideasBtnOnClick(View view) {
         openExploreActivitiesFragment();
     }
 

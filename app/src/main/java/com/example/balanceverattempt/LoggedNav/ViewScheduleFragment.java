@@ -115,7 +115,7 @@ public class ViewScheduleFragment extends Fragment {
                 Log.d(String.valueOf(this), "Month was scrolled to: " + firstDayOfNewMonth);
             }
         });
-        //getEventsFromDatabase(LoggedInActivity.getCurrentUser().getId());
+        getEventsFromDatabase(LoggedInActivity.getCurrentUser().getId());
         return view;
     }
 
@@ -129,13 +129,24 @@ public class ViewScheduleFragment extends Fragment {
         ArrayList<String> breaksEnd = bundle.getStringArrayList("breaks_to_list");
 
         List<Event> dayEvents = new ArrayList<>();
+        List<Date> dateEvents = new ArrayList<>();
 
         Event wakeUpEvent = new Event(Color.argb(255, 169, 68, 65), date.getTime(), "Wake up time: " + wakeUpTime);
         Event workTimeEvent = new Event(Color.argb(255, 169, 68, 65), date.getTime(), "Work time: " + workTime);
         Event expectedWorkEvent = new Event(Color.argb(255, 169, 68, 65), date.getTime(), "Expected work time: " + expectedWorkTime);
+        // Wake up EVENT/DATE
+        dateEvents.add(date);
         dayEvents.add(wakeUpEvent);
+
+        // Work time EVENT/DATE
         dayEvents.add(workTimeEvent);
+        dateEvents.add(date);
+
+        // Expected time EVENT/DATE
+        dateEvents.add(date);
         dayEvents.add(expectedWorkEvent);
+
+        // ADD EVENTS TO CALENDAR
         compactCalendarView.addEvent(wakeUpEvent);
         compactCalendarView.addEvent(workTimeEvent);
         compactCalendarView.addEvent(expectedWorkEvent);
@@ -147,12 +158,18 @@ public class ViewScheduleFragment extends Fragment {
             Event breakEvent = new Event(Color.argb(255, 169, 68, 65), date.getTime(), "Break: " + it1.next() + " to " + it2.next());
             compactCalendarView.addEvent(breakEvent);
             dayEvents.add(breakEvent);
-//            eventData = eventData + "\n\t\t"+it1.next()+" to "+it2.next();
         }
 
         System.out.println(LoggedInActivity.getCurrentUser().getName());
-//        getUserId(LoggedInActivity.getCurrentUser().getName());
-        LoggedInActivity.getCurrentUser().addEventsForDay(date, dayEvents);
+
+        // ADDING EVENTS TO USER
+        // Current Outake: Adding the date may not be needed
+        // ADD A SEPARATE DATE/EVENT
+        System.out.println(dayEvents);
+        LoggedInActivity.getCurrentUser().addEventsForDay(dayEvents);
+        LoggedInActivity.getCurrentUser().addDayDates(dateEvents);
+
+        //
         updateUser(LoggedInActivity.getCurrentUser().getId());
     }
 
@@ -232,34 +249,5 @@ public class ViewScheduleFragment extends Fragment {
         long millis = date.getTime();
         return millis;
     }
-//    public void getEvent(Date date) {
-//        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-//            System.out.println("Returning");
-//            return;
-//        }
-//        Cursor cursor = null;
-//        Uri.Builder eventsUriBuilder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-//
-////        ContentUris.appendId(eventsUriBuilder, Date);
-//        cursor = getActivity().getContentResolver().query(Events.CONTENT_URI, null, null, null, null);
-//        while (cursor.moveToNext()) {
-//            if (cursor != null) {
-//                int id = cursor.getColumnIndex(Events._ID);
-//                int titleId = cursor.getColumnIndex(Events.TITLE);
-//                int descripId = cursor.getColumnIndex(Events.DESCRIPTION);
-//                int displayName = cursor.getColumnIndex(Events.CALENDAR_DISPLAY_NAME);
-//
-//                String name = cursor.getString(displayName);
-//                String idValue = cursor.getString(id);
-//                String titleValue = cursor.getString(titleId);
-//                String descriptionValue = cursor.getString(descripId);
-//
-//
-//                Toast.makeText(getActivity(), name + ", " + idValue + ", " + titleValue + ", " + descriptionValue, Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(getActivity(), "Event is not present", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
 }

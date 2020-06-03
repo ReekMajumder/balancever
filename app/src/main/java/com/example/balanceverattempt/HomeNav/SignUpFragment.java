@@ -20,7 +20,11 @@ import com.example.balanceverattempt.FirebaseDatabaseHelper;
 import com.example.balanceverattempt.R;
 import com.example.balanceverattempt.models.User;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
 import java.util.List;
@@ -158,7 +162,6 @@ public class SignUpFragment extends Fragment {
             @Override
             public void DataIsInserted() {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
                 goToSignInFragment();
             }
 
@@ -177,39 +180,6 @@ public class SignUpFragment extends Fragment {
 
             }
         });
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            User user = new User(
-//                                    name,
-//                                    address,
-//                                    phone,
-//                                    email,
-//                                    password
-//                            );
-//
-//                            FirebaseDatabase.getInstance().getReference("Users")
-//                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    progressBar.setVisibility(View.GONE);
-//                                    if (task.isSuccessful()) {
-//                                        Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
-//                                        goToSignInFragment();
-//                                    } else {
-//                                        Toast.makeText(getActivity(), getString(R.string.failure), Toast.LENGTH_LONG).show();
-//                                    }
-//                                }
-//                            });
-//                        } else {
-//                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
-//                            progressBar.setVisibility(View.GONE);
-//                        }
-//                    }
-//                });
     }
 
 }

@@ -24,25 +24,28 @@ import com.example.balanceverattempt.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Structure Day page after you Log in
+ * Input wake up time, work time, expected work time, "blocks" times
+ * "Add activities" and "Other" button
+ * Press "confirm button"
+ */
+
 public class StructureDayFragment extends Fragment implements View.OnClickListener {
 
-    private static final String BLOCK = "BLOCK";
-    private static final String BREAK = "BREAK";
-    private static final String SLEEP_TIME = "SLEEP TIME";
     private static final String TAG = "StructureDayFragment";
 
     private String currentDay;
 
     private EditText wakeUpEt, startWorkTimeEt, expectedWorkTimeEt;
     private TimePickerDialog wakeUpDialog, startWorkDialog, expectedWorkDialog;
-    private Button calendarButton, confirmButton;
+    private Button calendarButton, confirmButton, addActivitiesButton, otherButton;
 
     private static ArrayList<String> startBreaksList = new ArrayList<>();
     private static ArrayList<String> toBreaksList = new ArrayList<>();
     private static ListView breakListView;
     private static ListAdapter breakListAdapter;
     private static ArrayList<Integer> breakPositions = new ArrayList<>();
-    private static ArrayList<Integer> blockPositions = new ArrayList<>();
 
 
     @Nullable
@@ -57,6 +60,8 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
         expectedWorkTimeEt = view.findViewById(R.id.expectedWorkTimeEditText);
         calendarButton = view.findViewById(R.id.calendarButton);
         confirmButton = view.findViewById(R.id.confirmDayButton);
+        addActivitiesButton = view.findViewById(R.id.addActivitiesButton);
+        otherButton = view.findViewById(R.id.otherButton);
 
         breakListView = view.findViewById(R.id.breakListView);
 
@@ -65,6 +70,8 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
         expectedWorkTimeEt.setOnClickListener(this);
         calendarButton.setOnClickListener(this);
         confirmButton.setOnClickListener(this);
+        addActivitiesButton.setOnClickListener(this);
+        otherButton.setOnClickListener(this);
 
         breakPositions.add(breakPositions.size());
 
@@ -94,12 +101,26 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
             case R.id.expectedWorkTimeEditText:
                 expectedWorkOnClick();
                 break;
+            case R.id.addActivitiesButton:
+                addActivitiesOnClick();
+                break;
+            case R.id.otherButton:
+                Toast.makeText(getActivity(), "Not configured yet.", Toast.LENGTH_SHORT);
+                break;
             default:
                 Log.d(TAG, "Default onClick triggered.");
                 break;
         }
     }
 
+    private void addActivitiesOnClick(){
+        // Change to the Explore Activities Fragment
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
+        transaction.addToBackStack(null);
+        transaction.add(R.id.logged_fragment_container, new ExploreActivitiesFragment(), "EXPLORE_ACITIVITIES_FRAGMENT").commit();
+    }
 
     private void confirmButtonOnClick() {
         // Change to View Schedule Fragment to the certain day
@@ -150,7 +171,6 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
         setListViewHeightBasedOnChildren(breakListView);
     }
 
-
     public static void removePosition() {
         System.out.println("REMOVE position");
         breakPositions.remove(breakPositions.size() - 1);
@@ -160,10 +180,6 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
 
     public static ArrayList<Integer> getBreakPositions() {
         return breakPositions;
-    }
-
-    public static ArrayList<Integer> getBlockPositions() {
-        return blockPositions;
     }
 
     private void calendarButtonOnClick() {
