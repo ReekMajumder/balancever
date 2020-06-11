@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,24 +16,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.balanceverattempt.FirebaseDatabaseHelper;
+import com.example.balanceverattempt.util.FirebaseDatabaseHelper;
 import com.example.balanceverattempt.R;
 import com.example.balanceverattempt.models.User;
 import com.github.sundeepk.compactcalendarview.domain.Event;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SignUpFragment extends Fragment {
 
     private EditText editTextName, editTextAddress, editTextPhone, editTextEmail, editTextPassword, editTextConfirmPassword;
     private Button signUpButton;
+    private CheckBox termsCheckBox;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
@@ -44,6 +40,7 @@ public class SignUpFragment extends Fragment {
         ((DrawerLocker) getActivity()).setDrawerEnabled(false);
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
+        termsCheckBox = view.findViewById(R.id.termsCheckBox);
         editTextName = view.findViewById(R.id.fullNameEditText);
         editTextAddress = view.findViewById(R.id.addressEditText);
         editTextPhone = view.findViewById(R.id.phoneEditText);
@@ -144,6 +141,11 @@ public class SignUpFragment extends Fragment {
             editTextPassword.requestFocus();
             return;
         }
+        if (!termsCheckBox.isChecked()){
+            termsCheckBox.setError("Terms of Service must be accepted");
+            termsCheckBox.requestFocus();
+            return;
+        }
 
         progressBar.setVisibility(View.VISIBLE);
         User user = new User(
@@ -155,8 +157,7 @@ public class SignUpFragment extends Fragment {
         );
         new FirebaseDatabaseHelper().addUser(user, new FirebaseDatabaseHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<User> users, List<String> keys) {
-
+            public void DataIsLoaded(List<HashMap<String, String>> users, List<String> keys) {
             }
 
             @Override
@@ -177,6 +178,11 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void DataEventIsLoaded(List<Event> eventList) {
+
+            }
+
+            @Override
+            public void GoogleUserExists(boolean value) {
 
             }
         });

@@ -118,11 +118,8 @@ public class User {
     }
 
     public void addEventsForDay(List<Event> eventDayList){
-        System.out.println("addEventsForDay: " + eventDayList);
         eventEventList.addAll(eventDayList);
-//        for (Event e : eventDayList){
-//            eventEventList.add(e);
-//        }
+        System.out.println("AddEventsForDay in User (eventEventList): " + eventEventList);
     }
 
     public void addEvent(Event event){
@@ -140,11 +137,14 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", eventDateList=" + eventDateList +
+                ", eventList=" + eventEventList +
                 '}';
     }
 }

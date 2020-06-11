@@ -1,10 +1,9 @@
 package com.example.balanceverattempt.HomeNav;
 
 import android.content.Intent;
-import android.net.ParseException;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,74 +17,41 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.balanceverattempt.FirebaseDatabaseHelper;
-import com.example.balanceverattempt.LoggedNav.LoggedInActivity;
+import com.example.balanceverattempt.util.FirebaseDatabaseHelper;
+import com.example.balanceverattempt.LoggedInNav.LoggedInActivity;
 import com.example.balanceverattempt.R;
 import com.example.balanceverattempt.models.User;
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
+import com.example.balanceverattempt.util.GoogleCalendarUtil;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.Auth;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.JsonObjectParser;
-import com.google.api.client.json.JsonParser;
-import com.google.api.client.json.JsonToken;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Events;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-
-import com.google.api.services.calendar.Calendar;
-import com.google.firebase.functions.FirebaseFunctionsException;
-
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
+import java.util.concurrent.ExecutionException;
 
 public class SignInFragment extends Fragment {
 
     private static final int RC_SIGN_IN = 123;
     private static final String TAG = "SignInFragment";
-    private CallbackManager callbackManager;
     private TextView nameOrEmailTextView, passwordTextView;
     private ProgressBar signInProgressBar;
     private String password, email;
@@ -101,7 +67,7 @@ public class SignInFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //SignInFragment.mGoogleSignInClient.signOut();
+        SignInFragment.mGoogleSignInClient.signOut();
     }
 
     @Nullable
@@ -120,10 +86,9 @@ public class SignInFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-//        setUpFirebaseListener();
 
-        // Create Google Sign in options
-        createRequest();
+        // Creating Google Sign in options
+        createGoogleSignInOptions();
 
         googleSignInButton = view.findViewById(R.id.google_button);
 
@@ -137,15 +102,34 @@ public class SignInFragment extends Fragment {
             signInProgressBar.setVisibility(View.VISIBLE);
             email = nameOrEmailTextView.getText().toString().trim();
             password = passwordTextView.getText().toString().trim();
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    signInProgressBar.setVisibility(View.GONE);
-                    login();
-                } else {
-                    signInProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
+            if (email.equals("")) {
+                signInProgressBar.setVisibility(View.GONE);
+                Snackbar.make(view, "ERROR: Email is empty.", Snackbar.LENGTH_SHORT).show();
+                nameOrEmailTextView.setError("Email Required");
+                nameOrEmailTextView.requestFocus();
+            } else if (password.equals("")) {
+                signInProgressBar.setVisibility(View.GONE);
+                Snackbar.make(view, "ERROR: Password is empty.", Snackbar.LENGTH_SHORT).show();
+                passwordTextView.setError("Password Required");
+                passwordTextView.requestFocus();
+            } else {
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        signInProgressBar.setVisibility(View.GONE);
+                        login();
+                    } else {
+                        signInProgressBar.setVisibility(View.GONE);
+                        Snackbar.make(getView(), "Login Failed", Snackbar.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        signInProgressBar.setVisibility(View.GONE);
+                        logInButton.setError("Invalid Email or Password.");
+                        Snackbar.make(getView(), "Invalid Email or Password. Try again.", Snackbar.LENGTH_LONG).show();
+                    }
+                });
+            }
         });
 //        callbackManager = CallbackManager.Factory.create();
 //        fbLogInButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -191,7 +175,7 @@ public class SignInFragment extends Fragment {
         return view;
     }
 
-    // Normal Login (If user signed up)
+    // Intent Handler for normal login
     private void login() {
         Intent intent = new Intent(getActivity(), LoggedInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -202,7 +186,7 @@ public class SignInFragment extends Fragment {
     }
 
     // Invoked when this fragment is created: Initializing GoogleSignInOptions
-    private void createRequest() {
+    private void createGoogleSignInOptions() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestServerAuthCode(getString(R.string.default_web_client_id), true)
@@ -222,145 +206,151 @@ public class SignInFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        // From googleSignIn() method
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                //System.out.println("Server Auth code: " + account.getServerAuthCode());
-
-                // Attempting to automate getting refresh token
-                //GetRefreshToken();
-                UpdateRefreshToken();
-                // Create firebase authentication with google
-                firebaseAuthWithGoogle(account.getIdToken());
+                GoogleSignInAccount googleAccount = task.getResult(ApiException.class);
+                // Starting alternate thread to get google credentials
+                firebaseAuthWithGoogle(googleAccount.getIdToken(), googleAccount, googleAccount.getServerAuthCode());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                ;
+                Snackbar.make(getView(), "Google Sign in failed. Please Try again.", Snackbar.LENGTH_SHORT).show();
                 Log.w(TAG, "Google sign in failed", e);
-                // ...
+                signInProgressBar.setVisibility(View.GONE);
             }
-        }
-    }
-
-    private void GetRefreshToken() throws IOException {
-        String CLIENT_SECRET_FILE = "/path/to/client_secret.json"; // Be careful not to share this!
-        String REDIRECT_URI = "/path/to/web_app_redirect"; // Can be empty if you don’t use web redirects
-        // Exchange auth code for access token
-        GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(
-                        JacksonFactory.getDefaultInstance(), new FileReader(CLIENT_SECRET_FILE));
-        GoogleTokenResponse tokenResponse =
-                new GoogleAuthorizationCodeTokenRequest(
-                        new NetHttpTransport(),
-                        JacksonFactory.getDefaultInstance(),
-                        "https://www.googleapis.com/oauth2/v4/token",
-                        clientSecrets.getDetails().getClientId(),
-                        clientSecrets.getDetails().getClientSecret(),
-//                        authCode,
-                        REDIRECT_URI)
-                        .execute();
-        String accessToken = tokenResponse.getAccessToken();
-        String refreshToken = tokenResponse.getRefreshToken();
-        Long expiresInSeconds = tokenResponse.getExpiresInSeconds();
-    }
-
-    // Update Refresh Token
-    private void UpdateRefreshToken() {
-        JSONParser parser = new JSONParser();
-
-        try {
-            Object obj = parser.parse(new FileReader("functions/credentials"));
-            JSONObject jsonObject = (JSONObject) obj;
-            System.out.println("JSONObject: " + obj);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.print(e.getMessage());
-        } catch (org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
+        } else if (resultCode == -1) {
+            System.out.println("Intent data: " + data.getExtras());
         }
     }
 
     // Registering google account with firebase authorization
-    private void firebaseAuthWithGoogle(String idToken) {
+    private void firebaseAuthWithGoogle(String idToken, GoogleSignInAccount googleAccount, String serverAuthCode) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        //gettingGoogleCalendarEvents(idToken);
 
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
-                        FirebaseUser user = mAuth.getInstance().getCurrentUser();
-                        // Geting key of google user
-//                        String key = new FirebaseDatabaseHelper().addGoogleUser(user, new FirebaseDatabaseHelper.DataStatus() {
-//                            @Override
-//                            public void DataIsLoaded(List<User> users, List<String> keys) {
-//
-//                            }
-//
-//                            @Override
-//                            public void DataIsInserted() {
-//                                Toast.makeText(getActivity(), "Successfully added User", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void DataIsUpdated() {
-//
-//                            }
-//
-//                            @Override
-//                            public void DataIsDeleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void DataEventIsLoaded(List<Event> eventList) {
-//
-//                            }
-//                        });
+                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        // If Google Account does not exist in database, it is added.
+                        // For storing events purposes so we don't consistently fetch events
+                        new FirebaseDatabaseHelper().googleAccountExistsOrNot(googleAccount.getEmail(), new FirebaseDatabaseHelper.DataStatus() {
+                            @Override
+                            public void DataIsLoaded(List<HashMap<String, String>> users, List<String> keys) {
+                            }
+
+                            @Override
+                            public void DataIsInserted() {
+                            }
+
+                            @Override
+                            public void DataIsUpdated() {
+                            }
+
+                            @Override
+                            public void DataIsDeleted() {
+                            }
+
+                            @Override
+                            public void DataEventIsLoaded(List<Event> eventList) {
+                            }
+
+                            @Override
+                            public void GoogleUserExists(boolean value) throws IOException, ExecutionException, InterruptedException, ParseException {
+                                if (!value){
+                                    creatingGoogleUserInDatabase(googleAccount);
+                                }
+                            }
+                        });
                         signInProgressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(getActivity().getApplicationContext(), LoggedInActivity.class);
-                        System.out.println(user);
-                        System.out.println("Google mAtuhId: " + user.getUid());
-                        intent.putExtra("email", email);
-                        intent.putExtra("key", user.getUid());
+                        System.out.println("Firebase useruid: " + firebaseUser.getUid());
+                        intent.putExtra("email", googleAccount.getEmail());
+                        intent.putExtra("server_auth_code", serverAuthCode);
                         intent.putExtra("google_account", "true");
                         startActivity(intent);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Toast.makeText(getActivity(), "Auth failed", Toast.LENGTH_SHORT);
+                        Snackbar.make(requireView(), "Authentication failed", Snackbar.LENGTH_LONG);
                     }
                 });
     }
 
-    private void gettingGoogleCalendarEvents(String event) {
-        GoogleCalendarHandler googCal = new GoogleCalendarHandler();
-        googCal.addMessage(event).addOnCompleteListener(new OnCompleteListener<String>() {
+    private void creatingGoogleUserInDatabase(GoogleSignInAccount googleAccount) throws IOException, ExecutionException, InterruptedException, ParseException {
+        System.out.println("Creating google user in database.");
+        // Check if this user is already created
+        User user = new User(
+                googleAccount.getGivenName(),
+                "Confidential",
+                "Confidential",
+                googleAccount.getEmail(),
+                "Confidential"
+        );
+        /*
+            1. Gets Google credentials
+            2. Once credentials are received then the respective events are received.
+         */
+        List<com.google.api.services.calendar.model.Event> googleEventList = new GoogleCalendarUtil(googleAccount.getServerAuthCode()).execute().get();
+
+        // Fetch google calendar events and put them into user
+        for (com.google.api.services.calendar.model.Event event : googleEventList){
+            String startDateString = event.getStart().getDateTime().toString();
+            String endDateString = event.getEnd().getDateTime().toString();
+
+            // Format of startDateString --> 2020-09-22T13:00:00.000-04:00
+            // After T, time is shown in 24 hour format-12 hour format
+            String[] splitStartD = startDateString.split("T");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateOfEvent = simpleDateFormat.parse(splitStartD[0]);
+            String[] splitStartTime = splitStartD[1].split("-");
+
+            String[] splitEndD = endDateString.split("T");
+            String[] splitEndTime = splitEndD[1].split("-");
+
+            String summary = event.getSummary().toString();
+            System.out.println("Start date string: " + startDateString + "\nEnd date string: " + endDateString);
+            System.out.println("Summary: " + summary);
+
+            // For 24 hour format
+            Event userEvent = new Event(Color.CYAN, dateOfEvent.getTime(),
+                    summary+"/"+splitStartTime[0].substring(0, 5)+"/"+splitEndTime[0].substring(0, 5));
+            System.out.println("User event: " + userEvent);
+            user.addEvent(userEvent);
+        }
+
+        new FirebaseDatabaseHelper().addGoogleUser(user, new FirebaseDatabaseHelper.DataStatus() {
             @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (!task.isSuccessful()) {
-                    Exception e = task.getException();
-                    if (e instanceof FirebaseFunctionsException) {
-                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                        FirebaseFunctionsException.Code code = ffe.getCode();
-                        Object details = ffe.getDetails();
-                        System.out.println("Error! Details: " + details);
-                        System.out.println("Error! Code: " + code);
-                    }
-                    // ...
-                }
-                // ...
+            public void DataIsLoaded(List<HashMap<String, String>> users, List<String> keys) {
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+                Snackbar.make(requireView(), "Google User inserted in Database.", Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+
+            @Override
+            public void DataEventIsLoaded(List<Event> eventList) {
+
+            }
+
+            @Override
+            public void GoogleUserExists(boolean value) {
+
             }
         });
-
     }
 
     private void googleUpdateUI(FirebaseUser user) {
@@ -408,10 +398,5 @@ public class SignInFragment extends Fragment {
         } else {
             System.out.println("user is null");
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 }

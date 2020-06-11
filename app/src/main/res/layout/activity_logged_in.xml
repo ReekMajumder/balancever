@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".LoggedNav.LoggedInActivity"
+    tools:context=".LoggedInNav.LoggedInActivity"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -27,9 +27,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_icon_colored"
-                android:padding="10dp"/>
-        </androidx.appcompat.widget.Toolbar>/
+                android:padding="10dp"
+                android:src="@drawable/ic_icon_colored" />
+        </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/logged_fragment_container"
@@ -42,10 +42,110 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@drawable/homepage_nav_bar_background"
-        app:headerLayout="@layout/nav_header"
-        app:itemTextColor="@color/white"
-        app:menu="@menu/logged_drawer_menu">
+        android:background="@drawable/homepage_background"
+        app:headerLayout="@layout/nav_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/structureYourDaytv"
+                style="@style/logged_nav_drawer_menu_item"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="@string/structure_your_day" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/viewScheduletv"
+                style="@style/logged_nav_drawer_menu_item"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="@string/view_schedule" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/copyScheduletv"
+                style="@style/logged_nav_drawer_menu_item"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:text="@string/copy_schedule" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/checkYourScoretv"
+                style="@style/logged_nav_drawer_menu_item"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="@string/check_your_score" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/shareYourScheduletv"
+                style="@style/logged_nav_drawer_menu_item"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="@string/share_your_schedule" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/exploreActivitiestv"
+                style="@style/logged_nav_drawer_menu_item"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="@string/explore_activities" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:id="@+id/contacttv"
+                style="@style/logged_nav_drawer_menu_item"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="@string/contact" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

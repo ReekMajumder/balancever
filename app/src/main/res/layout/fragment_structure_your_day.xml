@@ -1,238 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/structureYourDayLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/homepage_background">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/structDayScrollView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/planYourDayTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="40dp"
+            android:text="PLAN YOUR DAY"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/planYourDayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:text="PLAN YOUR DAY"
-                android:textColor="@color/white"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/selectTheDayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="SELECT THE DAY"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/planYourDayTextView" />
 
-            <TextView
-                android:id="@+id/selectTheDayTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:text="SELECT THE DAY"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/planYourDayTextView" />
+        <Button
+            android:id="@id/calendarButton"
+            android:layout_width="55dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_calendar_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.893"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/planYourDayTextView" />
 
-            <Button
-                android:id="@+id/calendarButton"
-                android:layout_width="55dp"
-                android:layout_height="53dp"
-                android:layout_marginStart="144dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/ic_calendar"
-                app:layout_constraintStart_toEndOf="@+id/selectTheDayTextView"
-                app:layout_constraintTop_toBottomOf="@+id/planYourDayTextView" />
+        <TextView
+            android:id="@+id/wakeUpAtTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="45dp"
+            android:text="WAKE UP AT"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectTheDayTextView" />
 
-            <TextView
-                android:id="@+id/wakeUpAtTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="45dp"
-                android:text="WAKE UP AT"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/selectTheDayTextView" />
+        <TextView
+            android:id="@+id/startWorkAtTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="45dp"
+            android:text="START WORK AT"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wakeUpAtTextView" />
 
-            <TextView
-                android:id="@+id/startWorkAtTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="45dp"
-                android:text="START WORK AT"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/wakeUpAtTextView" />
+        <TextView
+            android:id="@+id/expectedWorkTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="45dp"
+            android:text="EXPECTED WORK TIME (H)"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startWorkAtTextView" />
 
-            <TextView
-                android:id="@+id/expectedWorkTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="45dp"
-                android:text="EXPECTED WORK TIME (H)"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/startWorkAtTextView" />
+        <ListView
+            android:id="@+id/breakListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expectedWorkTimeTextView"
+            tools:layout_editor_absoluteY="353dp" />
 
-            <ListView
-                android:id="@+id/breakListView"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/expectedWorkTimeTextView"
-                tools:layout_editor_absoluteY="353dp" />
+        <Button
+            android:id="@+id/addActivitiesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_corners"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:text="ADD ACTIVITIES"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/breakListView" />
 
-            <Button
-                android:id="@+id/addActivitiesButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rounded_corners"
-                android:elevation="5dp"
-                android:padding="20dp"
-                android:text="ADD ACTIVITIES"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/breakListView" />
+        <Button
+            android:id="@+id/otherButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/rounded_corners"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="OTHER"
+            android:textSize="20dp"
+            app:layout_constraintStart_toEndOf="@id/addActivitiesButton"
+            app:layout_constraintTop_toBottomOf="@id/breakListView" />
 
-            <Button
-                android:id="@+id/otherButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rounded_corners"
-                android:elevation="5dp"
-                android:padding="20dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="30dp"
-                android:text="OTHER"
-                android:textSize="20dp"
-                app:layout_constraintStart_toEndOf="@id/addActivitiesButton"
-                app:layout_constraintTop_toBottomOf="@id/breakListView" />
+        <Button
+            android:id="@+id/confirmDayButton"
+            android:layout_width="358dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/rounded_corners"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:paddingStart="60dp"
+            android:paddingEnd="60dp"
+            android:text="CONFIRM"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addActivitiesButton" />
 
-            <!--            <ListView-->
-            <!--                android:id="@+id/sleepTimeListView"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="100dp"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/addActivitiesButton"-->
-            <!--                tools:layout_editor_absoluteY="353dp">-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="55dp"
+            android:background="@drawable/footer_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirmDayButton" />
 
-            <!--                &lt;!&ndash; BREAK LIST VIEW !&ndash;&gt;-->
-            <!--            </ListView>-->
+        <TextView
+            android:id="@+id/footerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="©balancever 2020"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/confirmDayButton"
-                android:layout_width="358dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/rounded_corners"
-                android:elevation="5dp"
-                android:padding="20dp"
-                android:paddingStart="60dp"
-                android:paddingEnd="60dp"
-                android:text="CONFIRM"
-                android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.461"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addActivitiesButton" />
+        <EditText
+            android:id="@+id/wakeUpEditText"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="148dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_outline"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:hint="00:00"
+            android:padding="15dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/startWorkEditText"
+            app:layout_constraintStart_toEndOf="@+id/wakeUpAtTextView"
+            app:layout_constraintTop_toBottomOf="@+id/calendarButton" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="55dp"
-                android:background="@drawable/footer_background"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/confirmDayButton" />
+        <EditText
+            android:id="@+id/startWorkEditText"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/edit_text_outline"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:hint="00:00"
+            android:padding="15dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/wakeUpEditText"
+            app:layout_constraintStart_toStartOf="@+id/wakeUpEditText"
+            app:layout_constraintTop_toBottomOf="@+id/wakeUpEditText" />
 
-            <TextView
-                android:id="@+id/footerTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="©balancever 2020"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/wakeUpEditText"
-                android:layout_width="120dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="148dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edit_text_outline"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:hint="00:00"
-                android:padding="15dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/startWorkEditText"
-                app:layout_constraintStart_toEndOf="@+id/wakeUpAtTextView"
-                app:layout_constraintTop_toBottomOf="@+id/calendarButton" />
-
-            <EditText
-                android:id="@+id/startWorkEditText"
-                android:layout_width="120dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/edit_text_outline"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:hint="00:00"
-                android:padding="15dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/wakeUpEditText"
-                app:layout_constraintStart_toStartOf="@+id/wakeUpEditText"
-                app:layout_constraintTop_toBottomOf="@+id/wakeUpEditText" />
-
-            <EditText
-                android:id="@+id/expectedWorkTimeEditText"
-                android:layout_width="120dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/edit_text_outline"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:hint="00:00"
-                android:padding="15dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/wakeUpEditText"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/wakeUpEditText"
-                app:layout_constraintTop_toBottomOf="@+id/startWorkEditText" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/expectedWorkTimeEditText"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/edit_text_outline"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:hint="00:00"
+            android:padding="15dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/wakeUpEditText"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/wakeUpEditText"
+            app:layout_constraintTop_toBottomOf="@+id/startWorkEditText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

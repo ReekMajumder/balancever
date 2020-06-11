@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Day View Header-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/final_orange"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/prevDayButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/ic_left_arrow"
+        android:contentDescription="@string/app_name"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/display_current_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:text="@string/current_day_date"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/nextDayButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="start"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ic_right_arrow"
+        android:contentDescription="@string/app_name"
+        android:padding="10dp" />
+</LinearLayout>

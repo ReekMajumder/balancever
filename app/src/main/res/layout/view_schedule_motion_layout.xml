@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/profile_motion_layout_view_schedule_scene">
+
+    <View
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/homepage_background" />
+
+    <TextView
+        android:id="@+id/currentDayTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Current Day"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        android:id="@+id/compactcalendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:compactCalendarBackgroundColor="#69B2D2"
+        app:compactCalendarCurrentDayBackgroundColor="#B491C8"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="#52307C"
+        app:compactCalendarMultiEventIndicatorColor="#ffffff"
+        app:compactCalendarTargetHeight="250dp"
+        app:compactCalendarTextColor="#ffffff"
+        app:compactCalendarTextSize="14sp"
+        app:compactCalendarEventIndicatorStyle="fill_large_indicator"
+        app:compactCalendarCurrentDayIndicatorStyle="fill_large_indicator"
+        app:layout_constraintTop_toBottomOf="@id/currentDayTextView" />
+
+    <include
+        android:id="@+id/scrollableContent"
+        layout="@layout/fragment_view_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="30dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/space" />
+</androidx.constraintlayout.motion.widget.MotionLayout>

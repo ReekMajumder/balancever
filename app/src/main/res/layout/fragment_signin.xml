@@ -71,6 +71,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corners"
         android:text="@string/sign_in"
+        android:elevation="30dp"
         app:layout_constraintEnd_toEndOf="@+id/editText"
         app:layout_constraintStart_toStartOf="@+id/editText"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
@@ -187,7 +188,8 @@
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="@+id/signUpWithSocialNetTextView"
         app:layout_constraintStart_toStartOf="@+id/signUpWithSocialNetTextView"
-        app:layout_constraintTop_toBottomOf="@+id/signUpWithSocialNetTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpWithSocialNetTextView"
+        android:elevation="30dp"/>
 
     <ProgressBar
         android:id="@+id/signInProgressBar"

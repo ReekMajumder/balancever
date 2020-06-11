@@ -7,4 +7,7 @@
     <color name="black">#000000</color>
     <color name="offwhite">#F5F5F5</color>
     <color name="grey">#CECBCB</color>
+    <color name="navy">#192841</color>
+    <color name="colorDivider">#aaaaaa</color>
+    <color name="final_orange">#ffbd9a</color>
 </resources>
