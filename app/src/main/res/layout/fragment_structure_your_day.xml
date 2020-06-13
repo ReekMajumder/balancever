@@ -145,6 +145,7 @@
             app:layout_constraintTop_toBottomOf="@id/addActivitiesButton" />
 
         <View
+            android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="55dp"
@@ -216,4 +217,5 @@
             app:layout_constraintStart_toStartOf="@+id/wakeUpEditText"
             app:layout_constraintTop_toBottomOf="@+id/startWorkEditText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.core.widget.NestedScrollView>

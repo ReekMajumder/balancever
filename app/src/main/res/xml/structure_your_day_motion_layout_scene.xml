@@ -7,10 +7,14 @@
         android:id="@+id/calendar_button_transition"
         motion:constraintSetEnd="@id/calendar_popup_end"
         motion:constraintSetStart="@id/calendar_popup_start"
-        motion:duration="500">
+        motion:duration="250">
         <OnClick
             motion:targetId="@id/calendarButton"
             motion:clickAction="toggle"
+            />
+        <OnSwipe
+            motion:dragDirection="dragUp"
+            motion:touchAnchorId="@id/structure_your_day_layout"
             />
        <KeyFrameSet>
        </KeyFrameSet>

@@ -165,7 +165,7 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
         String currentDate;
 
         // Check if day selected
-        if (CalendarFragment.getDateSelected() == null) {
+        if (currentDay == null) {
             Toast.makeText(getActivity(), "Please Select a day", Toast.LENGTH_SHORT).show();
             calendarButton.requestFocus();
         } else if (wakeUpEt.getText().toString().isEmpty()) {
@@ -179,7 +179,7 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
             Toast.makeText(getActivity(), "Please select an expected time to start work", Toast.LENGTH_SHORT).show();
             expectedWorkTimeEt.requestFocus();
         } else {
-            currentDate = CalendarFragment.getDateSelected();
+            currentDate = currentDay;
             // Converting String date selected (from Calendar) to Date object
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -414,6 +414,7 @@ public class StructureDayFragment extends Fragment implements View.OnClickListen
         if (dateSelected != null) {
             selectDaytv.setTextAppearance(R.style.date_selected_style);
             selectDaytv.setText(dateSelected);
+            currentDay = dateSelected;
         }
         motionLayout.transitionToStart();
     }

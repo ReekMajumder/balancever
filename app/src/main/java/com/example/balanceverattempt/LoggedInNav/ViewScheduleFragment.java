@@ -55,11 +55,10 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
             -> Key = index of event in dayEvents
             -> Value = list of integers (integers represent indexes of events it overlaps
     */
-    private HashMap<Integer, ArrayList<Integer>> overlappingCountMap;
     private HashMap<Integer, List<Integer>> overlappingListMap;
 
     private SimpleDateFormat dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.getDefault());
-    private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMMM", Locale.getDefault());
     private SimpleDateFormat dateFormatDayView = new SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault());
 
     @Nullable
@@ -89,7 +88,7 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
         compactCalendarView.setShouldDrawDaysHeader(true);
         compactCalendarView.setCurrentDayBackgroundColor(Color.parseColor("#52307C"));
         compactCalendarView.setCalendarBackgroundColor(Color.parseColor("#69B2D2"));
-        compactCalendarView.setCurrentSelectedDayBackgroundColor(Color.parseColor("#B491C8"));
+        compactCalendarView.setCurrentSelectedDayBackgroundColor(Color.parseColor("#9CDCED"));
 
         currentDateTextView.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
 
@@ -186,7 +185,6 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
     // Getting the events for the day and displaying them
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void displayDailyEvents(List<String> dayEvents) throws ParseException {
-        overlappingCountMap = new HashMap<>();
         overlappingListMap = new HashMap<>();
         // Event info: [n][0] has block height, [n][1] has block width
         int[][] eventInfo = new int[dayEvents.size()][2];
@@ -258,8 +256,7 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    // Gets the pixels at which the event starts in the Day View
-    // String startTime and endTime are both in time format "HH:mm"
+    // Calculating Height for Event View
     private int getEventTimeFrame(String startTime, String endTime) {
         // Calculate time difference
         // Note: startTimeSplit[0] and endTimeSplit[0] represent hours
@@ -272,7 +269,7 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
 
         // minutes difference
         int minutes = Integer.parseInt(endTimeSplit[1]) - Integer.parseInt(startTimeSplit[1]);
-        return (hours * 60) + ((minutes * 60) / 100);
+        return (hours * 60) + ((minutes * 60) / 100)-5; // -5 so that the height isn't flush to the dividers
     }
 
     private List<Integer> getEventStack(int indexOfEvent, Date[][] dateEventInfo) {
@@ -308,6 +305,7 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
     }
 
     private boolean datesOverlap(Date startDate1, Date endDate1, Date startDate2, Date endDate2) {
+        Log.d(TAG, "datesOverlap: " + startDate1+", "+endDate1+", "+startDate2+", " + endDate2);
         return startDate1.before(endDate2) && startDate2.before(endDate1);
     }
 
@@ -327,7 +325,7 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
         Log.d(TAG, "displayEventSection: " + title + " Minutes values: " + minutes);
         int topViewMargin = (hours * 60) + ((minutes * 60) / 100);
         Log.d(TAG, "displayEventSection: Top Margin: " + topViewMargin);
-        createEventView(leftMargin, topViewMargin, height, width, title, description);
+        createEventView(leftMargin, topViewMargin+3, height, width, title, description);
     }
 
     // Creates textview and adds it to mRelativeLayout

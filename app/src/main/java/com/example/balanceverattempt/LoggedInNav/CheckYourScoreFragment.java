@@ -15,6 +15,8 @@ public class CheckYourScoreFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_check_your_score, container, false);
+        View view =inflater.inflate(R.layout.fragment_check_your_score, container, false);
+
+        return view;
     }
 }
