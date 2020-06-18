@@ -12,8 +12,13 @@ import java.util.Map;
 
 public class User {
 
-    private String id, name, address, phone, email, password;
-
+    private String id;
+    private String name;
+    private String address;
+    private String phone;
+    private String email;
+    private String password;
+    private String eventbriteAccessToken;
     private List<Date> eventDateList;
 
     private List<Event> eventEventList;
@@ -27,6 +32,9 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.password = password;
+
+        // Initializing eventbriteAccessToken to empty so that null pointer exceptions are not caused
+        eventbriteAccessToken = "";
 
         // Initializing lists
         eventEventList = new ArrayList<>();
@@ -134,6 +142,14 @@ public class User {
         }
     }
 
+    public String getEventbriteAccessToken() {
+        return eventbriteAccessToken;
+    }
+
+    public void setEventbriteAccessToken(String eventbriteAccessToken) {
+        this.eventbriteAccessToken = eventbriteAccessToken;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -143,8 +159,9 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", eventbriteAccessToken='" + eventbriteAccessToken + '\'' +
                 ", eventDateList=" + eventDateList +
-                ", eventList=" + eventEventList +
+                ", eventEventList=" + eventEventList +
                 '}';
     }
 }

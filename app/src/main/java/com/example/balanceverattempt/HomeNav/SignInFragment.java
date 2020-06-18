@@ -21,7 +21,7 @@ import com.example.balanceverattempt.util.FirebaseDatabaseHelper;
 import com.example.balanceverattempt.LoggedInNav.LoggedInActivity;
 import com.example.balanceverattempt.R;
 import com.example.balanceverattempt.models.User;
-import com.example.balanceverattempt.util.GoogleCalendarUtil;
+import com.example.balanceverattempt.LoggedInNav.controllers.GoogleCalendarUtil;
 import com.facebook.login.widget.LoginButton;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

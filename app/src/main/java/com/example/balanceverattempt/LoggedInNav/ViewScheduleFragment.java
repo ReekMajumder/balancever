@@ -61,6 +61,7 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMMM", Locale.getDefault());
     private SimpleDateFormat dateFormatDayView = new SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault());
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,6 +95,8 @@ public class ViewScheduleFragment extends Fragment implements View.OnClickListen
 
         // Adding all events from user (in database) to calendar
         getEventsFromDatabase(LoggedInActivity.getCurrentUser().getId());
+        // So that the current day events show up before clicking on any date
+        onDayChange(currentDate);
 
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)

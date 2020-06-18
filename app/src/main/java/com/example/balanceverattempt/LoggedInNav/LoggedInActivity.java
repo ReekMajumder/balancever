@@ -1,6 +1,8 @@
 package com.example.balanceverattempt.LoggedInNav;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,11 +12,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,13 +84,10 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
 
         signInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
-        if (savedInstanceState == null) {
-            openLoggedInFragment();
-        }
-
         // Handling the Current User when Logging in
         // Setting currentUser it's values
-        userRef.addValueEventListener(new ValueEventListener() {
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (isGoogleAccount.equals("false")) {
@@ -97,6 +100,13 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
                                     ds.child("email").getValue(String.class),
                                     ds.child("password").getValue(String.class));
                             currentUser.setId(key);
+                            // If eventbrite token exists in database for user then set the current user's access token to that access token
+                            if (ds.child("eventbriteAccessToken").getValue(String.class) != null) {
+                                currentUser.setEventbriteAccessToken(ds.child("eventbriteAccessToken").getValue(String.class));
+                            } else {
+                                currentUser.setEventbriteAccessToken("");
+                            }
+
                             getEventsFromDatabase(currentUser.getId());
                             System.out.println(currentUser);
                             if (toolbarMenu != null && currentUser != null) {
@@ -108,7 +118,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
                 } else if (isGoogleAccount.equals("true")) {
                     System.out.println(TAG + ": Google Login");
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        System.out.println("Ds.child.email: " + ds.child("email").getValue(String.class)+", intent email: " + email);
+                        System.out.println("Ds.child.email: " + ds.child("email").getValue(String.class) + ", intent email: " + email);
                         if (ds.child("email").getValue(String.class).equals(email)) {
                             currentUser = new User(ds.child("name").getValue(String.class),
                                     ds.child("address").getValue(String.class),
@@ -116,6 +126,13 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
                                     ds.child("email").getValue(String.class),
                                     ds.child("password").getValue(String.class));
                             currentUser.setId(ds.child("id").getValue(String.class));
+
+                            // If eventbrite token exists in database for user then set the current user's access token to that access token
+                            if (ds.child("eventbriteAccessToken").getValue(String.class) != null) {
+                                currentUser.setEventbriteAccessToken(ds.child("eventbriteAccessToken").getValue(String.class));
+                            } else {
+                                currentUser.setEventbriteAccessToken("");
+                            }
                             getEventsFromDatabase(currentUser.getId());
                             System.out.println(TAG + ": Current Google User: " + currentUser);
                             if (toolbarMenu != null && currentUser != null) {
@@ -125,12 +142,22 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
                         }
                     }
                 }
+                openLoggedInFragment();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+//
+//        if (savedInstanceState == null) {
+//            openLoggedInFragment();
+//        }
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 
     // Add events in database to current user
