@@ -87,7 +87,6 @@ public class FreeTimeFragment extends Fragment {
         ProgressBar progressBar= view.getRootView().findViewById(R.id.timeprogressBar);
      //   int progressValue= progressBar.getProgress();
         displayPercent= view.findViewById(R.id.timeprogress);
-        // just checking 
         WaveLoadingView waveLoadingView= view.findViewById(R.id.waveloadingfree);
         int progress=90;
         displayPercent.setText(""+progress+"%");
